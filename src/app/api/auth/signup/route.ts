@@ -1,5 +1,6 @@
 import { signUpSchema } from "@/lib/types";
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcrypt"
 
 
 export async function POST(req: Request) {
@@ -9,12 +10,12 @@ export async function POST(req: Request) {
         console.error("Validation failed:", validation.error);
         return new Response(JSON.stringify({ error: "Invalid input" }), { status: 400 });
     }
-
+    const hashedPassword = await bcrypt.hash(validation.data.password, 10);
     const user = await prisma.user.create({
         data: {
             username: validation.data.username,
             email: validation.data.email,
-            password: validation.data.password,
+            password: hashedPassword,
         },
     });
 
