@@ -46,7 +46,7 @@ export default function IncomePage() {
   // Fetch incomes
   const fetchIncomes = React.useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/income`);
+      const response = await fetch('/api/income');
       if (response.ok) {
         const data = await response.json();
         setIncomes(data);
@@ -65,7 +65,7 @@ export default function IncomePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/income`, {
+      const response = await fetch('/api/income', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

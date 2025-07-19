@@ -13,7 +13,7 @@ export default function SignUpForm() {
 
     const handler = async () => {
 
-    const data=axios.post(`${process.env.NEXTAUTH_URL}/api/auth/signup`, {
+    const data=axios.post('/api/auth/signup', {
         username,
         email,
         password,

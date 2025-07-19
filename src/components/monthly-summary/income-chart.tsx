@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const fetchIncomeData = async () => {
     try {
-        const response = await fetch(`${process.env.NEXTAUTH_URL}/api/monthly-summary`, {
+        const response = await fetch('/api/monthly-summary', {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
