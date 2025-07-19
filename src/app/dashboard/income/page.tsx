@@ -46,7 +46,7 @@ export default function IncomePage() {
   // Fetch incomes
   const fetchIncomes = React.useCallback(async () => {
     try {
-      const response = await fetch('/api/income');
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/income`);
       if (response.ok) {
         const data = await response.json();
         setIncomes(data);
@@ -65,7 +65,7 @@ export default function IncomePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/income', {
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/income`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -246,7 +246,7 @@ export default function IncomePage() {
       <div className="mb-6">
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors cursor-pointer"
         >
           {showForm ? 'Cancel' : 'Add New Income'}
         </button>
@@ -255,7 +255,7 @@ export default function IncomePage() {
       {/* Add Income Form */}
       {showForm && (
         <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-lg shadow mb-8 border border-emerald-500/20">
-          <h2 className="text-xl font-bold text-white mb-4">Add New Income</h2>
+          <h2 className="text-xl font-bold text-white mb-4 ">Add New Income</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -299,15 +299,15 @@ export default function IncomePage() {
                 <option value="bank_transfer">Bank Transfer</option>
                 <option value="paypal">PayPal</option>
                 <option value="stripe">Stripe</option>
-                <option value="check">Check</option>
+                <option value="cheque">Cheque</option>
                 <option value="crypto">Cryptocurrency</option>
                 <option value="other">Other</option>
               </select>
             </div>
-            <div className="md:col-span-3">
+            <div className="md:col-span-3 ">
               <button
                 type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors cursor-pointer "
               >
                 Add Income
               </button>

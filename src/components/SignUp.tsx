@@ -12,8 +12,8 @@ export default function SignUpForm() {
     const [error, setError] = useState("");
 
     const handler = async () => {
-        
-    const data=axios.post("/api/auth/signup", {
+
+    const data=axios.post(`${process.env.NEXTAUTH_URL}/api/auth/signup`, {
         username,
         email,
         password,

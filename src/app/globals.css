@@ -30,3 +30,64 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Print Styles - Simplified and Effective */
+@media print {
+  /* Ultra minimal page setup */
+  @page {
+    margin: 0.2in !important;
+    size: A4 portrait !important;
+  }
+  
+  /* Hide everything first */
+  * {
+    visibility: hidden !important;
+  }
+  
+  /* Show only invoice content */
+  #invoice-content,
+  #invoice-content * {
+    visibility: visible !important;
+  }
+  
+  /* Make invoice take full page and center it */
+  #invoice-content {
+    position: absolute !important;
+    left: 50% !important;
+    top: 0 !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    max-width: 700px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Force colors to print */
+  .bg-blue-600,
+  .bg-emerald-600,
+  .bg-gray-600,
+  .bg-purple-600 {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* White text in colored backgrounds */
+  .bg-blue-600 *,
+  .bg-emerald-600 *,
+  .bg-gray-600 *,
+  .bg-purple-600 * {
+    color: white !important;
+  }
+  
+  /* Black text elsewhere */
+  .text-black {
+    color: black !important;
+  }
+}

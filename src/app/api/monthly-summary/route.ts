@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "../auth/[...nextauth]/authOptions";
-export default async function GET() {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     
@@ -11,14 +11,14 @@ export default async function GET() {
     }
 
     const userId = session.user.id;
-    const monthlySummary=await prisma.$queryRaw`
+    const monthlySummary = await prisma.$queryRaw<Array<{month: string, totalincome: number}>>`
     SELECT 
-        TO_CHAR(DATE_TRUNC('month', createdAt), 'YYYY-MM') AS month,
-        SUM("amount") AS totalIncome
+        TO_CHAR(DATE_TRUNC('month', "date"), 'YYYY-MM') AS month,
+        SUM("amount")::numeric AS totalincome
     FROM "Income"
     WHERE "userId" = ${userId}
-    GROUP BY DATE_TRUNC('month', createdAt)
-    ORDER BY month ASC
+    GROUP BY DATE_TRUNC('month', "date")
+    ORDER BY DATE_TRUNC('month', "date") ASC
     `;
 
     return NextResponse.json(monthlySummary);

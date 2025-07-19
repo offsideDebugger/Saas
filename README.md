@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BucksBunny - Income Management SaaS
 
-## Getting Started
+A modern, professional income management application built with Next.js 14, TypeScript, Prisma, and NextAuth.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🔐 **Secure Authentication** - NextAuth with bcrypt password hashing
+- 💰 **Income Management** - Add, view, and delete income records with beautiful UI
+- 📊 **Analytics Dashboard** - Interactive charts with Recharts (Line & Bar charts)
+- 🎨 **Modern UI** - Glassmorphism design with emerald radial glow theme
+- 📱 **Responsive Design** - Mobile-first approach with collapsible sidebar
+- 🔔 **Toast Notifications** - Beautiful feedback for user actions
+- 🗃️ **PostgreSQL Database** - Robust data persistence with Prisma ORM
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js 14, TypeScript, Tailwind CSS
+- **Backend:** Next.js API Routes, Prisma ORM
+- **Database:** PostgreSQL
+- **Authentication:** NextAuth.js with bcrypt
+- **Charts:** Recharts
+- **Package Manager:** Bun
+
+## 📋 Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd saas
+   ```
+
+2. **Install dependencies**
+   ```bash
+   bun install
+   ```
+
+3. **Setup environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your database URL and secrets
+   ```
+
+4. **Setup database**
+   ```bash
+   bun prisma migrate dev
+   bun prisma generate
+   ```
+
+5. **Start development server**
+   ```bash
+   bun dev
+   ```
+
+6. **Open your browser**
+   ```
+   http://localhost:3000
+   ```
+
+## 📚 Documentation
+
+For comprehensive documentation including component details, API routes, and architecture, see [DOCUMENTATION.md](./DOCUMENTATION.md).
+
+## 🎯 Key Pages
+
+- **Landing Page** (`/`) - Welcome page with sign-in/sign-up
+- **Dashboard** (`/dashboard`) - Main dashboard with quick actions
+- **Income Management** (`/dashboard/income`) - Full CRUD for income records
+- **Monthly Summary** (`/dashboard/monthly-summary`) - Analytics with interactive charts
+
+## 🔧 Environment Variables
+
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/bucksunny"
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📖 Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/
+│   ├── api/              # API routes
+│   ├── auth/             # Authentication pages
+│   ├── dashboard/        # Dashboard pages
+│   └── layout.tsx        # Root layout
+├── components/
+│   ├── dashboard/        # Dashboard components
+│   ├── monthly-summary/  # Analytics components
+│   └── auth/             # Authentication forms
+└── lib/                  # Utilities and configurations
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Features Overview
 
-## Learn More
+### Income Management
+- Add income records with client, amount, and payment mode
+- View all records in a responsive table
+- Delete records with confirmation modal
+- Real-time statistics (total, average, count)
 
-To learn more about Next.js, take a look at the following resources:
+### Monthly Analytics
+- Interactive line and bar charts
+- Monthly income aggregation
+- Statistics cards with totals and averages
+- Responsive chart visualization
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Invoice Generator
+- Professional invoice creation with multiple themes
+- Client details and payment information
+- Print functionality using browser's print dialog
+- Preview mode with edit capabilities
+- Theme customization (Professional, Emerald, Corporate, Modern)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### UI/UX
+- Emerald theme with glassmorphism effects
+- Mobile-responsive sidebar with backdrop
+- Toast notifications for user feedback
+- Loading states and empty state handling
 
-## Deploy on Vercel
+## 🚀 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Build for production
+bun build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Start production server
+bun start
+```
+
+## 📄 License
+
+This project is private and proprietary.
+
+---
+
+**Built with ❤️ using Next.js, TypeScript, and modern web technologies.**

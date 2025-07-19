@@ -1,24 +1,30 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import logo from "../../../assets/logo2.png"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { ClientAvatar } from "./avatar";
+
 
 export default function SideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const sidebarRef = useRef<HTMLElement>(null);
+    const router = useRouter();
 
-    // Close dropdown when clicking outside
+    const { data: session } = useSession();
+    const userEmail = session?.user?.email || "Guest";
+    const userName = session?.user?.username || "User";
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsUserDropdownOpen(false);
             }
             if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-                // Only close sidebar on mobile when clicking outside
                 if (window.innerWidth < 640) {
                     setIsSidebarOpen(false);
                 }
@@ -31,7 +37,13 @@ export default function SideBar() {
         };
     }, []);
 
-    // Close sidebar when screen size changes to desktop
+
+
+    const handleLogout = async () => {
+        await signOut({ redirect: false });
+        router.push("/");
+    };
+
     useEffect(() => {
         function handleResize() {
             if (window.innerWidth >= 640) {
@@ -53,10 +65,10 @@ export default function SideBar() {
                 ></div>
             )}
             
-            <nav className="fixed top-0 z-50 w-full bg-slate-900/80 backdrop-blur-sm border-b border-emerald-500/20">
+            <nav className="fixed  top-0 z-50 w-full bg-slate-900/80 backdrop-blur-sm border-b border-emerald-500/20">
                 <div className="px-3 py-3 lg:px-5 lg:pl-3">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center justify-start rtl:justify-end">
+                        <div className="flex items-center justify-start  rtl:justify-end">
                             <button 
                                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                                 type="button" 
@@ -76,38 +88,33 @@ export default function SideBar() {
                         </div>
                         <div className="flex items-center">
                             <div className="flex items-center ms-3 relative" ref={dropdownRef}>
-                                <div>
+                                <div >
                                     <button 
                                         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
                                         type="button" 
-                                        className="flex text-sm bg-emerald-500/20 rounded-full focus:ring-4 focus:ring-emerald-500/50 backdrop-blur-sm" 
+                                        className="flex cursor-pointer text-sm focus:ring-4 focus:ring-emerald-500/50 rounded-full" 
                                         aria-expanded={isUserDropdownOpen}
                                     >
                                         <span className="sr-only">Open user menu</span>
-                                        <Image className="w-8 h-8 rounded-full" src={logo} alt="user photo" width={40} height={40}/>
+                                        <ClientAvatar 
+                                            name={userName} 
+                                            size="sm" 
+                                            className="ring-2 ring-emerald-500/50 hover:ring-emerald-400/70 transition-all duration-200"
+                                        />
                                     </button>
                                 </div>
                                 <div className={`absolute right-0 top-12 z-50 my-4 text-base list-none bg-slate-800/90 backdrop-blur-sm divide-y divide-emerald-500/20 rounded-lg shadow-lg border border-emerald-500/20 ${isUserDropdownOpen ? 'block' : 'hidden'}`} id="dropdown-user">
                                     <div className="px-4 py-3" role="none">
                                         <p className="text-sm text-white" role="none">
-                                            Neil Sims
+                                            {userName}
                                         </p>
                                         <p className="text-sm font-medium text-emerald-300 truncate" role="none">
-                                            neil.sims@bucksbunny.com
+                                            {userEmail}
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
                                         <li>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-emerald-500/20 hover:text-white transition-colors" role="menuitem">Dashboard</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-emerald-500/20 hover:text-white transition-colors" role="menuitem">Settings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-emerald-500/20 hover:text-white transition-colors" role="menuitem">Earnings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-300 hover:bg-emerald-500/20 hover:text-white transition-colors" role="menuitem">Sign out</a>
+                                            <a onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-300 hover:bg-emerald-500/20 hover:text-white transition-colors cursor-pointer" role="menuitem">Sign out</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -137,48 +144,29 @@ export default function SideBar() {
                         <span className="flex-1 ms-3 whitespace-nowrap">Income</span>
                         </Link>
                     </li>
-                    <li>
-                        <a href="#" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
-                        <svg className="shrink-0 w-5 h-5 text-emerald-400 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
-                        </svg>
-                        <span className="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-                        <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-emerald-800 bg-emerald-100 rounded-full">3</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
-                        <svg className="shrink-0 w-5 h-5 text-emerald-400 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-                        </svg>
-                        <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
+                      <li>
+                        <Link href="/dashboard/monthly-summary" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
                         <svg className="shrink-0 w-5 h-5 text-emerald-400 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                             <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z"/>
                         </svg>
-                        <span className="flex-1 ms-3 whitespace-nowrap">Products</span>
-                        </a>
-                    </li>
-                    <li>
-                        <Link href="/auth/signin" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
-                        <svg className="shrink-0 w-5 h-5 text-emerald-400 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
-                        </svg>
-                        <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
+                        <span className="flex-1 ms-3 whitespace-nowrap">Monthly Summary</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/auth/signup" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
+                        <Link href="/dashboard/invoice-generate" className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
                         <svg className="shrink-0 w-5 h-5 text-emerald-400 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                            <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
-                            <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
+                            <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
                         </svg>
-                        <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
+                        <span className="flex-1 ms-3 whitespace-nowrap">Invoice Generator</span>
                         </Link>
+                    </li>
+                      <li>
+                        <a href="#" onClick={handleLogout} className="flex items-center p-2 text-gray-300 rounded-lg hover:bg-emerald-500/20 hover:text-white group transition-colors">
+                        <svg className="shrink-0 w-5 h-5 text-emerald-400 transition duration-75 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
+                        </svg>
+                        <span className="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                        </a>
                     </li>
                 </ul>
             </div>

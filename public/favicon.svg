@@ -1,0 +1,25 @@
+<svg width="128" height="128" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </radialGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="120" cy="120" r="115" fill="url(#bg)" stroke="url(#green)" stroke-width="5"/>
+
+  <!-- BB Monogram Icon -->
+  <g transform="translate(85,65)">
+    <!-- Left B -->
+    <path d="M0 0 v110 q26 -5 26 -26 q0 -21 -26 -26 q26 -5 26 -26 q0 -21 -26 -26" 
+          stroke="url(#green)" fill="none" stroke-width="6" stroke-linecap="round"/>
+    <!-- Right B -->
+    <path d="M70 0 v110 q-26 -5 -26 -26 q0 -21 26 -26 q-26 -5 -26 -26 q0 -21 26 -26" 
+          stroke="url(#green)" fill="none" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>
