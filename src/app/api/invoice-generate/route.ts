@@ -16,10 +16,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Generate invoice number
     const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
     
-    // Create invoice object (you can save to database here if needed)
     const invoice = {
       id: Date.now().toString(),
       invoiceNumber,

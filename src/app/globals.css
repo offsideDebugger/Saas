@@ -91,3 +91,34 @@ body {
     color: black !important;
   }
 }
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  /* Fix hover animations in Firefox */
+  .group:hover {
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+  
+  /* Smooth backdrop-blur in Firefox */
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  
+  /* Fix transform transitions */
+  .will-change-transform {
+    will-change: transform, box-shadow, border-color;
+  }
+}
+
+/* General hover improvements for all browsers */
+.group {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.group:hover {
+  transform: translateZ(0) scale(1.02);
+  -webkit-transform: translateZ(0) scale(1.02);
+}
