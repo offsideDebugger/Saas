@@ -296,17 +296,17 @@ export default function InvoiceForm() {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Theme Preview
               </label>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-wrap items-center gap-3">
                 {invoiceThemes.map((theme) => (
                   <div
                     key={theme.value}
-                    className={`flex items-center space-x-2 cursor-pointer ${
+                    className={`flex items-center gap-2 cursor-pointer ${
                       selectedTheme === theme.value ? 'opacity-100' : 'opacity-50'
                     }`}
                     onClick={() => setSelectedTheme(theme.value)}
                   >
                     <div className={`w-4 h-4 rounded ${theme.color}`}></div>
-                    <span className="text-sm text-gray-300">{theme.label}</span>
+                    <span className="text-sm text-gray-300 whitespace-nowrap">{theme.label}</span>
                   </div>
                 ))}
               </div>
