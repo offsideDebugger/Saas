@@ -11,17 +11,32 @@ export async function GET() {
     }
 
     const userId = session.user.id;
+    
+    const dailySummary = await prisma.$queryRaw<Array<{date: string, totalincome: number}>>`
+    SELECT 
+        TO_CHAR("date", 'YYYY-MM-DD') AS date,
+        SUM("amount") AS totalincome
+    FROM "Income"
+    WHERE "userId" = ${userId}
+    GROUP BY "date"
+    ORDER BY "date" ASC
+    `;
+
+    // Also get monthly totals
     const monthlySummary = await prisma.$queryRaw<Array<{month: string, totalincome: number}>>`
     SELECT 
         TO_CHAR(DATE_TRUNC('month', "date"), 'YYYY-MM') AS month,
-        SUM("amount")::numeric AS totalincome
+        SUM("amount") AS totalincome
     FROM "Income"
     WHERE "userId" = ${userId}
     GROUP BY DATE_TRUNC('month', "date")
     ORDER BY DATE_TRUNC('month', "date") ASC
     `;
 
-    return NextResponse.json(monthlySummary);
+    return NextResponse.json({ 
+      dailyData: dailySummary,
+      monthlyData: monthlySummary 
+    });
   } catch (error) {
     console.error("GET /api/monthly-summary error:", error);
     return NextResponse.json(

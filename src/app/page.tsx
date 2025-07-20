@@ -1,5 +1,8 @@
-import Navbar from "@/components/landing/navbar";
+
 import Link from "next/link";
+
+import Image from "next/image";
+import logo from "../../assets/logo2.png";
 
 export default function Home() {
   return (
@@ -12,12 +15,21 @@ export default function Home() {
         }}
       />
       
-      {/* Navbar */}
-      <Navbar />
+      
       
       {/* Hero Section */}
       <section className="flex flex-col pt-15 items-center justify-center min-h-screen relative z-10 px-6">
         <main className="relative z-10 text-center max-w-5xl mx-auto">
+          {/* Centered Logo */}
+          <div className="flex justify-center mb-8">
+            <Image 
+              src={logo} 
+              alt="BucksBunny Logo" 
+              width={90} 
+              height={90} 
+              className="rounded-full ring-4 ring-emerald-500/30 shadow-2xl"
+            />
+          </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
             Bucks Bunny — Hop Into Smarter
           </h1>
@@ -33,7 +45,7 @@ export default function Home() {
           
           <div className="flex justify-center">
             <Link href="/auth/signup">
-              <button className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors w-full sm:w-auto">
+              <button className="bg-green-500 hover:bg-green-600 cursor-pointer text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors w-full sm:w-auto">
                 Start Free Trial
               </button>
             </Link>
@@ -263,10 +275,15 @@ export default function Home() {
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
               Join thousands of entrepreneurs who trust BucksBunny to keep their finances organized and their businesses thriving.
             </p>
-            <div className="flex justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/auth/signup">
-                <button className="bg-green-500 hover:bg-green-600 text-white px-10 py-4 rounded-lg font-bold text-lg transition-colors w-full sm:w-auto">
+                <button className="bg-green-500 cursor-pointer hover:bg-green-600 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all duration-200 w-full sm:w-auto shadow-lg hover:shadow-xl transform hover:scale-105">
                   Start Your Free Trial
+                </button>
+              </Link>
+              <Link href="/about">
+                <button className="bg-transparent cursor-pointer hover:bg-green-500/20 text-green-400 hover:text-green-300 border-2 border-green-500 hover:border-green-400 px-10 py-4 rounded-lg font-bold text-lg transition-all duration-200 w-full sm:w-auto hover:shadow-lg">
+                  About
                 </button>
               </Link>
             </div>
@@ -286,7 +303,7 @@ export default function Home() {
           
           <div className="border-t border-slate-700 pt-8">
             <p className="text-gray-400">
-              © 2025 BucksBunny. All rights reserved. Made with 💚 for entrepreneurs.
+              © 2025 BucksBunny. All rights reserved. Made with 💚 by <a className="text-green-400 underline" href="https://x.com/offsideDebugger">offsideDebugger</a> for entrepreneurs.
             </p>
           </div>
         </div>

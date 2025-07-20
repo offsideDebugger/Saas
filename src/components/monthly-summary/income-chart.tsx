@@ -17,22 +17,33 @@ const fetchIncomeData = async () => {
         return data;
     } catch (error) {
         console.error("Error fetching income data:", error);
-        return [];
+        return { dailyData: [], monthlyData: [] };
     }
 };
 
 interface IncomeData {
-    month: string;
-    totalincome: string;
+    date: string;
+    totalincome: number;
 }
 
 interface TransformedIncomeData {
+    date: string;
+    income: number;
+}
+
+interface MonthlyData {
+    month: string;
+    totalincome: number;
+}
+
+interface TransformedMonthlyData {
     month: string;
     income: number;
 }
 
 export default function IncomeChart() {
     const [incomeData, setIncomeData] = useState<TransformedIncomeData[]>([]);
+    const [monthlyData, setMonthlyData] = useState<TransformedMonthlyData[]>([]);
     const [chartType, setChartType] = useState<'line' | 'bar'>('line');
     const [loading, setLoading] = useState(true);
 
@@ -40,12 +51,33 @@ export default function IncomeChart() {
         const getIncomeData = async () => {
             setLoading(true);
             const data = await fetchIncomeData();
-            // Transform data for recharts
-            const transformedData: TransformedIncomeData[] = data.map((item: IncomeData) => ({
-                month: item.month,
-                income: parseFloat(item.totalincome)
+            
+            // Transform daily data for recharts and aggregate by formatted date
+            const dateMap = new Map<string, number>();
+            
+            data.dailyData.forEach((item: IncomeData) => {
+                const formattedDate = new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const currentTotal = dateMap.get(formattedDate) || 0;
+                dateMap.set(formattedDate, currentTotal + Number(item.totalincome));
+            });
+            
+            // Convert map to array for chart
+            const transformedDailyData: TransformedIncomeData[] = Array.from(dateMap.entries()).map(([date, income]) => ({
+                date,
+                income
             }));
-            setIncomeData(transformedData);
+            
+            // Sort by date
+            transformedDailyData.sort((a, b) => new Date(a.date + ', 2025').getTime() - new Date(b.date + ', 2025').getTime());
+            
+            // Transform monthly data
+            const transformedMonthlyData: TransformedMonthlyData[] = data.monthlyData.map((item: MonthlyData) => ({
+                month: new Date(item.month + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+                income: Number(item.totalincome) || 0
+            }));
+            
+            setIncomeData(transformedDailyData);
+            setMonthlyData(transformedMonthlyData);
             setLoading(false);
         };
         getIncomeData();
@@ -59,7 +91,7 @@ export default function IncomeChart() {
         if (active && payload && payload.length) {
             return (
                 <div className="bg-slate-800/90 backdrop-blur-sm border border-emerald-500/20 rounded-lg p-3 shadow-lg">
-                    <p className="text-emerald-300 font-medium">{`Month: ${label}`}</p>
+                    <p className="text-emerald-300 font-medium">{`Date: ${label}`}</p>
                     <p className="text-white font-bold">
                         {`Income: $${payload[0].value.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
                     </p>
@@ -98,8 +130,8 @@ export default function IncomeChart() {
         <div className="bg-slate-800/30 backdrop-blur-sm border border-emerald-500/20 rounded-lg p-6">
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Income Trend</h3>
-                    <p className="text-emerald-300">Visual representation of your monthly income over time</p>
+                    <h3 className="text-xl font-semibold text-white mb-2">Daily Income Trend</h3>
+                    <p className="text-emerald-300">Visual representation of your daily income over time</p>
                 </div>
                 <div className="flex gap-2">
                     <button
@@ -131,7 +163,7 @@ export default function IncomeChart() {
                         <LineChart data={incomeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
                             <XAxis 
-                                dataKey="month" 
+                                dataKey="date" 
                                 stroke="#9CA3AF"
                                 fontSize={12}
                                 tickLine={false}
@@ -158,7 +190,7 @@ export default function IncomeChart() {
                         <BarChart data={incomeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
                             <XAxis 
-                                dataKey="month" 
+                                dataKey="date" 
                                 stroke="#9CA3AF"
                                 fontSize={12}
                                 tickLine={false}
@@ -185,11 +217,11 @@ export default function IncomeChart() {
             {incomeData.length > 0 && (
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-slate-700/30 rounded-lg p-4 text-center">
-                        <p className="text-gray-400 text-sm">Total Months</p>
+                        <p className="text-gray-400 text-sm">Total Days</p>
                         <p className="text-white font-bold text-lg">{incomeData.length}</p>
                     </div>
                     <div className="bg-slate-700/30 rounded-lg p-4 text-center">
-                        <p className="text-gray-400 text-sm">Average Income</p>
+                        <p className="text-gray-400 text-sm">Average Daily Income</p>
                         <p className="text-emerald-400 font-bold text-lg">
                             ${(incomeData.reduce((sum, item) => sum + item.income, 0) / incomeData.length).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </p>
@@ -199,6 +231,23 @@ export default function IncomeChart() {
                         <p className="text-emerald-400 font-bold text-lg">
                             ${incomeData.reduce((sum, item) => sum + item.income, 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </p>
+                    </div>
+                </div>
+            )}
+
+            {/* Monthly Totals Section */}
+            {monthlyData.length > 0 && (
+                <div className="mt-8">
+                    <h4 className="text-lg font-semibold text-white mb-4">Monthly Totals</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {monthlyData.map((month, index) => (
+                            <div key={index} className="bg-slate-700/30 rounded-lg p-4 text-center border border-emerald-500/20">
+                                <p className="text-gray-400 text-sm">{month.month}</p>
+                                <p className="text-emerald-400 font-bold text-xl">
+                                    ${month.income.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}

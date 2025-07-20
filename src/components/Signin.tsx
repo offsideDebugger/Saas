@@ -2,14 +2,12 @@
 import { signIn } from "next-auth/react"
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
      const [email, setEmail] = useState("");
      const [password, setPassword] = useState("");
      const [error, setError] = useState("");
      const [isLoading, setIsLoading] = useState(false);
-     const router = useRouter();
 
      const handler = async (e: React.FormEvent) => {
           e.preventDefault();
@@ -17,22 +15,24 @@ export default function SignInPage() {
           setError("");
           
           try {
-               const res = await signIn("credentials", { 
+               const result = await signIn("credentials", { 
                     email, 
                     password,
-                    redirect: false // Don't redirect automatically
+                    callbackUrl: "/dashboard",
+                    redirect: false
                });
                
-               if (res?.error) {
+               if (result?.error) {
                     setError("Invalid email or password");
-               } else if (res?.ok) {
-                    console.log("Sign in successful");
-                    router.push("/dashboard"); // Redirect to dashboard on success
+                    setIsLoading(false);
+               } else if (result?.ok) {
+                    // Successful sign in, NextAuth will handle the redirect
+                    window.location.href = "/dashboard";
                }
+               
           } catch (error) {
                setError("An error occurred during sign in");
                console.error("Sign in error:", error);
-          } finally {
                setIsLoading(false);
           }
      };

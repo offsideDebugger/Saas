@@ -156,7 +156,7 @@ export default function InvoiceForm() {
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="ml-4 inline-flex text-gray-400 hover:text-white focus:outline-none transition-colors"
+              className="ml-4 inline-flex text-gray-400 hover:text-white focus:outline-none transition-colors cursor-pointer"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -317,14 +317,14 @@ export default function InvoiceForm() {
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-6 py-2 text-gray-300 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg font-medium transition-colors"
+                className="px-6 py-2 text-gray-300 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg font-medium transition-colors cursor-pointer"
               >
                 Reset
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center"
+                className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center cursor-pointer"
               >
                 {loading && (
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -545,7 +545,7 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
         <div className="flex flex-wrap gap-3">
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-800"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-emerald-500/25 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-800 cursor-pointer"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clipRule="evenodd" />
@@ -554,13 +554,13 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
           </button>
           <button
             onClick={onEdit}
-            className="px-4 py-2.5 text-gray-300 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg font-medium transition-colors border border-slate-600"
+            className="px-4 py-2.5 text-gray-300 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg font-medium transition-colors border border-slate-600 cursor-pointer"
           >
             Edit
           </button>
           <button
             onClick={onReset}
-            className="px-4 py-2.5 text-emerald-300 bg-emerald-500/20 hover:bg-emerald-500/30 rounded-lg font-medium transition-colors border border-emerald-500/30"
+            className="px-4 py-2.5 text-emerald-300 bg-emerald-500/20 hover:bg-emerald-500/30 rounded-lg font-medium transition-colors border border-emerald-500/30 cursor-pointer"
           >
             Create New
           </button>
