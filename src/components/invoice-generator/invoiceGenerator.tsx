@@ -385,7 +385,7 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
             padding: 0 !important;
             box-sizing: border-box !important;
           }
-          
+        
           /* Hide body background and other elements */
           body {
             background: white !important;
@@ -398,7 +398,7 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
           body > * {
             display: none !important;
           }
-          
+        
           /* Show only the invoice container parent */
           body > div,
           body > main,
@@ -469,7 +469,7 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
             font-weight: bold !important;
             margin-bottom: 2px !important;
           }
-          
+        
           #invoice-content p,
           #invoice-content span,
           #invoice-content div {
@@ -496,7 +496,7 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
-          
+        
           /* Text colors */
           #invoice-content .text-white {
             color: white !important;
@@ -513,7 +513,7 @@ function InvoicePreview({ invoice, onEdit, onReset, theme }: InvoicePreviewProps
             @bottom-left { content: ""; }
             @bottom-right { content: ""; }
           }
-          
+        
           /* Ensure everything fits on one page */
           html, body {
             height: auto !important;
