@@ -26,7 +26,7 @@ export default function SignInPage() {
                     setError("Invalid email or password");
                     setIsLoading(false);
                } else if (result?.ok) {
-                    // Successful sign in, NextAuth will handle the redirect
+                    
                     window.location.href = "/dashboard";
                }
                

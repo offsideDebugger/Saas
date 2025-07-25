@@ -12,11 +12,10 @@ export default function SignUpForm() {
     const [loading, setLoading] = useState(false);
 
     const handler = async () => {
-        // Clear previous errors
-        setError("");
         
-        // Validation
-        if(username.length < 3) {
+        setError("");
+
+        if (username.length < 3) {
             setError("Username must be at least 3 characters long");
             return;
         }
@@ -41,7 +40,7 @@ export default function SignUpForm() {
             if (response.status === 200) {
                 console.log("User created successfully");
                 
-                // Automatically sign in the user after successful registration
+                
                 const result = await signIn('credentials', {
                     email,
                     password,

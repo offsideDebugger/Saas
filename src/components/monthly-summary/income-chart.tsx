@@ -52,7 +52,6 @@ export default function IncomeChart() {
             setLoading(true);
             const data = await fetchIncomeData();
             
-            // Transform daily data for recharts and aggregate by formatted date
             const dateMap = new Map<string, number>();
             
             data.dailyData.forEach((item: IncomeData) => {
@@ -61,16 +60,16 @@ export default function IncomeChart() {
                 dateMap.set(formattedDate, currentTotal + Number(item.totalincome));
             });
             
-            // Convert map to array for chart
+         
             const transformedDailyData: TransformedIncomeData[] = Array.from(dateMap.entries()).map(([date, income]) => ({
                 date,
                 income
             }));
             
-            // Sort by date
+          
             transformedDailyData.sort((a, b) => new Date(a.date + ', 2025').getTime() - new Date(b.date + ', 2025').getTime());
             
-            // Transform monthly data
+  
             const transformedMonthlyData: TransformedMonthlyData[] = data.monthlyData.map((item: MonthlyData) => ({
                 month: new Date(item.month + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
                 income: Number(item.totalincome) || 0
